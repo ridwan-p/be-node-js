@@ -1,7 +1,10 @@
 const sequelize = require("sequelize");
 const connection = require("../utils/databases/connection");
+const Model = require("../utils/databases/Model");
 
-const User = connection.define('User', {
+class User extends Model {}
+
+User.init({
   id: {
     type: sequelize.INTEGER,
     autoIncrement: true,
@@ -20,6 +23,8 @@ const User = connection.define('User', {
     allowNull: false
   }
 }, {
+  sequelize: connection,
+  modelName: 'User',
   timestamps: true,
   defaultScope:{
     attributes:{exclude: ['password']}

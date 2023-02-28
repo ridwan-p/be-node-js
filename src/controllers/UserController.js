@@ -1,11 +1,27 @@
 const User = require('../models/User')
 const Hash = require('../utils/crypt/Hash');
+const NotFoundError = require('../utils/exceptions/NotFoundError');
 
 class UserController {
   async index(req, res) {
     const users = await User.findAll()
     
     res.json(users);
+  }
+
+  async show(req, res) {
+    try {
+      const {userId} = req.params
+      const user = await User.findOrFail({where:{id: userId}})
+      res.json(user);
+      
+    } catch (error) {
+      if(error instanceof NotFoundError) {
+        res.status(404)
+        res.json(error.message)
+      }
+      console.log('error server')
+    }
   }
 
   async store(req, res) {
