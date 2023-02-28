@@ -16,14 +16,16 @@ class Route {
   constructor() {
     this.#baseRouter = router
   }
+  
 
   static url(urlMethod, url, options) {
-    const [Controller, method] = options
+    const [BaseController, method] = options
 
-    const baseController = new Controller()
+    const baseController = new BaseController()
+    baseController.setMethod(method)
+
     const self = new Route()
-
-    self.#baseRouter[urlMethod](url, baseController[method])
+    self.#baseRouter[urlMethod](url, (req,res, next) => baseController.run(req,res, next))
   }
 
   static get(path, options) {
