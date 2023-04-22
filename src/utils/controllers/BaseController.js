@@ -19,7 +19,10 @@ class BaseController {
       if(error instanceof NotFoundError) {
         res.status(404)
         res.json(error.message)
+      } else {
+        throw new Error(error.message)
       }
+
     }
   }
 

@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const BaseController = require('../utils/controllers/BaseController');
 const Hash = require('../utils/crypt/Hash');
-const NotFoundError = require('../utils/exceptions/NotFoundError');
 
 class UserController extends BaseController {
   async index(req, res) {
