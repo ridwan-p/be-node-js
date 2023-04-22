@@ -1,3 +1,4 @@
+const { ValidationError } = require("joi")
 const NotFoundError = require("../exceptions/NotFoundError")
 
 class BaseController {
@@ -19,8 +20,14 @@ class BaseController {
       if(error instanceof NotFoundError) {
         res.status(404)
         res.json(error.message)
+      } else if(error instanceof ValidationError){
+        res.status(422)
+        res.json(error.details.map((item) => ({
+          key: item.context.key,
+          message: item.message  
+        })))
       } else {
-        throw new Error(error.message)
+        throw new Error(error.messages)
       }
 
     }

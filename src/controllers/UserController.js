@@ -1,3 +1,4 @@
+const { FormStore } = require('../forms/users');
 const User = require('../models/User');
 const BaseController = require('../utils/controllers/BaseController');
 const Hash = require('../utils/crypt/Hash');
@@ -16,7 +17,8 @@ class UserController extends BaseController {
   }
 
   async store(req, res) {
-    const {username, name, password} = req.body
+    const {username, name, password} = await FormStore.validateAsync(req.body)
+
     const pass = await new Hash(password).hash()
     const user = await User.create({username, name, password: pass})
     // hide password 
