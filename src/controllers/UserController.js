@@ -31,7 +31,7 @@ class UserController extends BaseController {
 
   async update(req, res) {
     const {userId} = req.params
-    const user = await User.findOne({where:{id: userId}})
+    const user = await User.findOrFail({where:{id: userId}})
     // save data 
     const {username, name, password} = req.body
     const pass = await new Hash(password).hash()
@@ -49,7 +49,7 @@ class UserController extends BaseController {
 
   async destroy(req, res) {
     const {userId} = req.params
-    const user = await User.findOne({where:{id: userId}})
+    const user = await User.findOrFail({where:{id: userId}})
     await user.destroy()
     // hide password 
     const data = user.toJSON()
