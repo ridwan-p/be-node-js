@@ -8,8 +8,6 @@ class RegisterController extends BaseController {
   async register(req, res) {
     // validation 
     const {name, username, password} = await this.validate(req.body)
-    // find one 
-    
     const pass = await new Hash(password).hash()
     const user = await User.create({username, name, password: pass})
     // hide password 
