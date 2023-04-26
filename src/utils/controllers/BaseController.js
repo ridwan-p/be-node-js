@@ -27,6 +27,7 @@ class BaseController {
           message: item.message  
         })))
       } else {
+        console.log('error: ', error)
         throw new Error(error.messages)
       }
 
