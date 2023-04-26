@@ -19,13 +19,17 @@ class Route {
   
 
   static url(urlMethod, url, options) {
-    const [BaseController, method] = options
+    const [BaseController, method, middleware] = options
 
     const baseController = new BaseController()
     baseController.setMethod(method)
 
     const self = new Route()
-    self.#baseRouter[urlMethod](url, (req,res, next) => baseController.run(req,res, next))
+    if(middleware) {
+      self.#baseRouter[urlMethod](url, middleware, (req,res, next) => baseController.run(req,res, next))
+    }else {
+      self.#baseRouter[urlMethod](url, (req,res, next) => baseController.run(req,res, next))
+    }
   }
 
   static get(path, options) {

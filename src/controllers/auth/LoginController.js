@@ -35,7 +35,7 @@ class LoginController extends BaseController {
 
   token(user) {
     return jwt.sign(
-      {userId: user.id, email: user.email},
+      {userId: user.id, username: user.username},
       appConfig.tokenKey,
       {expiresIn: this.getExpiresInText()}
     )

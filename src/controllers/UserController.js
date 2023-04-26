@@ -7,7 +7,7 @@ class UserController extends BaseController {
   async index(req, res) {
     const users = await User.findAll()
     
-    res.json(users);
+    res.status(200).json(users);
   }
 
   async show(req, res) {
