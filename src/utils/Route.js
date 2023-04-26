@@ -18,38 +18,39 @@ class Route {
   }
   
 
-  static url(urlMethod, url, options) {
-    const [BaseController, method, middleware] = options
-
-    const baseController = new BaseController()
-    baseController.setMethod(method)
+  static url(urlMethod, url, ...options) {
+    for (let i = 0; i < options.length; i++) {
+      const el = options[i]
+      if(typeof el === 'object') {
+        const [BaseController, method] = el
+        const baseController = new BaseController()
+        baseController.setMethod(method)
+        options[i] = (req, res, next) => baseController.run(req,res, next)
+      }
+    }
 
     const self = new Route()
-    if(middleware) {
-      self.#baseRouter[urlMethod](url, middleware, (req,res, next) => baseController.run(req,res, next))
-    }else {
-      self.#baseRouter[urlMethod](url, (req,res, next) => baseController.run(req,res, next))
-    }
+    self.#baseRouter[urlMethod](url, options)
   }
 
-  static get(path, options) {
-    Route.url(METHOD_GET, path, options)
+  static get(path, ...options) {
+    Route.url(METHOD_GET, path, ...options)
   }
 
-  static post(path, options) {
-    Route.url(METHOD_POST, path, options)
+  static post(path, ...options) {
+    Route.url(METHOD_POST, path, ...options)
   }
 
-  static put(path, options) {
-    Route.url(METHOD_PUT, path, options)
+  static put(path, ...options) {
+    Route.url(METHOD_PUT, path, ...options)
   }
 
-  static patch(path, options) {
-    Route.url(METHOD_PATCH, path, options)
+  static patch(path, ...options) {
+    Route.url(METHOD_PATCH, path, ...options)
   }
 
-  static delete(path, options) {
-    Route.url(METHOD_DELETE, path, options)
+  static delete(path, ...options) {
+    Route.url(METHOD_DELETE, path, ...options)
   }
 
   static use(path) {
