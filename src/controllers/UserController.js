@@ -5,7 +5,10 @@ const Hash = require('../utils/crypt/Hash');
 
 class UserController extends BaseController {
   async index(req, res) {
-    const users = await User.findAll()
+    const users = await User.paginate({
+      perPage: req.query.perPage || req.body.perPage,
+      page: req.query.page || req.body.page,
+    })
     
     res.status(200).json(users);
   }
