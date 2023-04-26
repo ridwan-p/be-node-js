@@ -1,4 +1,4 @@
-const Route = require('../utils/Route')
+const Route = require('../utils/facades/Route')
 const LoginController = require('../controllers/auth/LoginController')
 
 Route.post('/login', [LoginController, 'login'])

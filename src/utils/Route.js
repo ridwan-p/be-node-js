@@ -10,57 +10,79 @@ const METHOD_DELETE = 'delete'
 class Route {
   // property 
   #baseRouter
+  #paths = []
   //
   //
   //
   constructor() {
     this.#baseRouter = router
   }
-  
 
-  static url(urlMethod, url, ...options) {
-    for (let i = 0; i < options.length; i++) {
-      const el = options[i]
-      if(typeof el === 'object') {
-        const [BaseController, method] = el
-        const baseController = new BaseController()
-        baseController.setMethod(method)
-        options[i] = (req, res, next) => baseController.run(req,res, next)
+  pushPath(type, url, options) {
+    this.#paths.push({
+      type,
+      url,
+      options
+    })
+  }
+
+  getPaths() {
+    return this.#paths
+  }
+
+  setBaseRouter(type, url, options) {
+    this.#baseRouter[type](url, options)
+  }
+
+  getBaseRoute() {
+    return this.#baseRouter
+  }
+
+  url(type, url, ...options) {
+    this.pushPath(type, url, options)
+  }
+
+  get(path, ...options) {
+    this.url(METHOD_GET, path, ...options)
+  }
+
+  post(path, ...options) {
+    this.url(METHOD_POST, path, ...options)
+  }
+
+  put(path, ...options) {
+    this.url(METHOD_PUT, path, ...options)
+  }
+
+  patch(path, ...options) {
+    this.url(METHOD_PATCH, path, ...options)
+  }
+
+  delete(path, ...options) {
+    this.url(METHOD_DELETE, path, ...options)
+  }
+
+  use(path) {
+    this.#baseRouter.use(path)
+  }
+
+  getRouter() {
+    const paths = this.getPaths()
+    for (let i = 0; i < paths.length; i++) {
+      const {type, url, options} = paths[i];
+      // modif options with controller 
+      for (let j = 0; j < options.length; j++) {
+        const el = options[j]
+        if(typeof el === 'object') {
+          const [BaseController, method] = el
+          const baseController = new BaseController()
+          baseController.setMethod(method)
+          options[j] = (req, res, next) => baseController.run(req,res, next)
+        }
       }
+      this.setBaseRouter(type, url, options)
     }
-
-    const self = new Route()
-    self.#baseRouter[urlMethod](url, options)
-  }
-
-  static get(path, ...options) {
-    Route.url(METHOD_GET, path, ...options)
-  }
-
-  static post(path, ...options) {
-    Route.url(METHOD_POST, path, ...options)
-  }
-
-  static put(path, ...options) {
-    Route.url(METHOD_PUT, path, ...options)
-  }
-
-  static patch(path, ...options) {
-    Route.url(METHOD_PATCH, path, ...options)
-  }
-
-  static delete(path, ...options) {
-    Route.url(METHOD_DELETE, path, ...options)
-  }
-
-  static use(path) {
-    const self = new Route()
-    self.#baseRouter.use(path)
-  }
-
-  static getRouter() {
-    const self = new Route()
-    return self.#baseRouter
+    return this.getBaseRoute()
   }
 }
 
