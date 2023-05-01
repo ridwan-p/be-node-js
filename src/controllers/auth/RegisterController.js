@@ -1,14 +1,14 @@
 const User = require('../../models/User');
-const BaseController = require('../../utils/controllers/BaseController');
-const Hash = require('../../utils/crypt/Hash');
+const Controller = require('../Controller');
+const Hash = require('../../utils/facades/Hash');
 const { FormRegister } = require('../../forms/auth');
 
-class RegisterController extends BaseController {
+class RegisterController extends Controller {
 
   async register(req, res) {
     // validation 
     const {name, username, password} = await this.validate(req.body)
-    const pass = await new Hash(password).hash()
+    const pass = await Hash.hash(password)
     const user = await User.create({username, name, password: pass})
     // hide password 
     const data = user.toJSON()

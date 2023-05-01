@@ -1,10 +1,4 @@
-const Route = require('../Route')
+const Route = require('../routes/Route')
+const FacadeHandle = require('../handles/FacadeHandle')
 
-class RouteFacade {
-  
-  static run() {
-    return new Route()
-  }
-}
-
-module.exports = RouteFacade.run()
+module.exports = new Proxy(new Route, FacadeHandle)

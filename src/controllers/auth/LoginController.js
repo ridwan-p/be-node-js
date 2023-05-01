@@ -1,12 +1,12 @@
 const User = require('../../models/User');
-const BaseController = require('../../utils/controllers/BaseController');
-const Hash = require('../../utils/crypt/Hash');
+const Controller = require('../Controller');
+const Hash = require('../../utils/facades/Hash');
 const Joi = require('joi')
 const jwt = require('jsonwebtoken')
 const moment = require('moment')
-const appConfig = require('../../configs/app')
+const appConfig = require('../../configs/app');
 
-class LoginController extends BaseController {
+class LoginController extends Controller {
   #expiresInAmount = 3
   #expiresInUnit = 'days'
   
@@ -30,7 +30,7 @@ class LoginController extends BaseController {
   }
 
   authenticate(password, hash) {
-    return new Hash(password).compare(hash)
+    return Hash.compare(hash, password)
   }
 
   token(user) {

@@ -1,9 +1,9 @@
 const { FormStore } = require('../forms/users');
 const User = require('../models/User');
-const BaseController = require('../utils/controllers/BaseController');
-const Hash = require('../utils/crypt/Hash');
+const Controller = require('./Controller');
+const Hash = require('../utils/facades/Hash');
 
-class UserController extends BaseController {
+class UserController extends Controller {
   async index(req, res) {
     const users = await User.paginate({
       perPage: req.query.perPage || req.body.perPage,
@@ -22,7 +22,7 @@ class UserController extends BaseController {
   async store(req, res) {
     const {username, name, password} = await FormStore.validateAsync(req.body)
 
-    const pass = await new Hash(password).hash()
+    const pass = await Hash.hash(password)
     const user = await User.create({username, name, password: pass})
     // hide password 
     const data = user.toJSON()
@@ -39,7 +39,7 @@ class UserController extends BaseController {
     const user = await User.findOrFail({where:{id: userId}})
     // save data 
     const {username, name, password} = req.body
-    const pass = await new Hash(password).hash()
+    const pass = await Hash.hash(password)
     user.set({username, name, password: pass})
     await user.save()
     // hide password 
