@@ -66,7 +66,7 @@ class Route {
     this.#baseRouter.use(path)
   }
 
-  getRouter() {
+  get router() {
     const paths = this.getPaths()
     for (let i = 0; i < paths.length; i++) {
       const {type, url, options} = paths[i];

@@ -8,4 +8,4 @@ Route.post('/', auth, [UserController, 'store'])
 Route.put('/:userId', auth, [UserController, 'update'])
 Route.delete('/:userId', auth, [UserController, 'destroy'])
 
-module.exports = Route.getRouter()
+module.exports = Route.router

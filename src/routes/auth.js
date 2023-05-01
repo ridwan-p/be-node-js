@@ -5,4 +5,4 @@ const RegisterController = require('../controllers/auth/RegisterController')
 Route.post('/login', [LoginController, 'login'])
 Route.post('/register', [RegisterController, 'register'])
 
-module.exports = Route.getRouter()
+module.exports = Route.router
