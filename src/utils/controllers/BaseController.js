@@ -7,6 +7,7 @@ class BaseController {
 
   setMethod(method) {
     this.#methodRun = method
+    return this
   }
 
   getMethod() {
