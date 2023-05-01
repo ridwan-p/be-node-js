@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const BaseController = require('../controllers/BaseController')
 
 const METHOD_GET = 'get'
 const METHOD_POST = 'post'
@@ -66,6 +67,17 @@ class Route {
     this.#baseRouter.use(path)
   }
 
+  #generateController(arr) {
+    const [Controller, method] = arr
+    if(typeof Controller !== 'function') throw new SyntaxError("Controller is not class")
+    const controller = new Controller()
+    // eslint-disable-next-line no-prototype-builtins
+    if(BaseController.prototype.isPrototypeOf(controller)) {
+      return (req, res, next) => controller.setMethod(method).run(req,res, next)
+    }
+    return null
+  } 
+
   get router() {
     const paths = this.getPaths()
     for (let i = 0; i < paths.length; i++) {
@@ -73,11 +85,12 @@ class Route {
       // modif options with controller 
       for (let j = 0; j < options.length; j++) {
         const el = options[j]
-        if(typeof el === 'object') {
-          const [BaseController, method] = el
-          const baseController = new BaseController()
-          baseController.setMethod(method)
-          options[j] = (req, res, next) => baseController.run(req,res, next)
+        if(Array.isArray(el)) {
+          options[j] = this.#generateController(el)
+        } else if( typeof el === 'function') {
+          options[j] = el
+        } else {
+          options[j] = null
         }
       }
       this.setBaseRouter(type, url, options)
