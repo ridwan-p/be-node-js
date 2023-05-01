@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
 class Hash {
-  static saltRounds = 10;
+  #saltRounds = 10;
   
   constructor(text) {
     this.setText(text)
@@ -9,12 +9,22 @@ class Hash {
   
   setText(text) {
     if(text) this.text = text
+    return this
+  }
+
+  getSaltRounds() {
+    return this.#saltRounds
+  }
+
+  setSaltRounds(value) {
+    this.#saltRounds = value
+    return this
   }
 
   hash(text) {
     this.setText(text)
     return new Promise((resolve, reject) => {
-      bcrypt.hash(this.text, Hash.saltRounds, function(error, hash) {
+      bcrypt.hash(this.text, this.getSaltRounds(), function(error, hash) {
         if(error) reject(error)
         resolve(hash)
       })
