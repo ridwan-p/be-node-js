@@ -2,7 +2,11 @@ const sequelize = require('sequelize');
 const connection = require('../utils/databases/connection');
 const Model = require('../utils/databases/Model');
 
-class User extends Model {}
+class User extends Model {
+  _hidden = [
+    'password'
+  ];
+}
 
 User.init({
   id: {
@@ -28,14 +32,6 @@ User.init({
   tableName: 'users',
   modelName: 'User',
   timestamps: true,
-  defaultScope:{
-    attributes:{exclude: ['password']}
-  },
-  scopes: {
-    withPassword: {
-      attributes: {}
-    }
-  }
 });
 
 module.exports = User;
