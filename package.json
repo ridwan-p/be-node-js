@@ -2,7 +2,8 @@
   "name": "be-node-js",
   "packageManager": "yarn@4.0.0-rc.39",
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "db:sync": "node ./src/commands/dbSync.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
