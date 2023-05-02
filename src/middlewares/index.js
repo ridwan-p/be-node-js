@@ -1,5 +1,5 @@
-const Authentication = require("./Authentication");
+const Authentication = require('./Authentication');
 
-exports.auth = new Authentication().handle
+exports.auth = new Authentication().handle;
 
-module.exports = exports
+module.exports = exports;

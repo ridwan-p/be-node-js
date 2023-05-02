@@ -1,22 +1,22 @@
-const express = require('express')
-const router = express.Router()
-const BaseController = require('../controllers/BaseController')
+const express = require('express');
+const router = express.Router();
+const BaseController = require('../controllers/BaseController');
 
-const METHOD_GET = 'get'
-const METHOD_POST = 'post'
-const METHOD_PUT = 'put'
-const METHOD_PATCH = 'patch'
-const METHOD_DELETE = 'delete'
+const METHOD_GET = 'get';
+const METHOD_POST = 'post';
+const METHOD_PUT = 'put';
+const METHOD_PATCH = 'patch';
+const METHOD_DELETE = 'delete';
 
 class Route {
   // property 
-  #baseRouter
-  #paths = []
+  #baseRouter;
+  #paths = [];
   //
   //
   //
   constructor() {
-    this.#baseRouter = router
+    this.#baseRouter = router;
   }
 
   pushPath(type, url, options) {
@@ -24,79 +24,79 @@ class Route {
       type,
       url,
       options
-    })
+    });
   }
 
   getPaths() {
-    return this.#paths
+    return this.#paths;
   }
 
   setBaseRouter(type, url, options) {
-    this.#baseRouter[type](url, options)
+    this.#baseRouter[type](url, options);
   }
 
   getBaseRoute() {
-    return this.#baseRouter
+    return this.#baseRouter;
   }
 
   url(type, url, ...options) {
-    this.pushPath(type, url, options)
+    this.pushPath(type, url, options);
   }
 
   get(path, ...options) {
-    this.url(METHOD_GET, path, ...options)
+    this.url(METHOD_GET, path, ...options);
   }
 
   post(path, ...options) {
-    this.url(METHOD_POST, path, ...options)
+    this.url(METHOD_POST, path, ...options);
   }
 
   put(path, ...options) {
-    this.url(METHOD_PUT, path, ...options)
+    this.url(METHOD_PUT, path, ...options);
   }
 
   patch(path, ...options) {
-    this.url(METHOD_PATCH, path, ...options)
+    this.url(METHOD_PATCH, path, ...options);
   }
 
   delete(path, ...options) {
-    this.url(METHOD_DELETE, path, ...options)
+    this.url(METHOD_DELETE, path, ...options);
   }
 
   use(path) {
-    this.#baseRouter.use(path)
+    this.#baseRouter.use(path);
   }
 
   #generateController(arr) {
-    const [Controller, method] = arr
-    if(typeof Controller !== 'function') throw new SyntaxError("Controller is not class")
-    const controller = new Controller()
+    const [Controller, method] = arr;
+    if(typeof Controller !== 'function') throw new SyntaxError('Controller is not class');
+    const controller = new Controller();
     // eslint-disable-next-line no-prototype-builtins
     if(BaseController.prototype.isPrototypeOf(controller)) {
-      return (req, res, next) => controller.setMethod(method).run(req,res, next)
+      return (req, res, next) => controller.setMethod(method).run(req,res, next);
     }
-    return null
+    return null;
   } 
 
   get router() {
-    const paths = this.getPaths()
+    const paths = this.getPaths();
     for (let i = 0; i < paths.length; i++) {
       const {type, url, options} = paths[i];
       // modif options with controller 
       for (let j = 0; j < options.length; j++) {
-        const el = options[j]
+        const el = options[j];
         if(Array.isArray(el)) {
-          options[j] = this.#generateController(el)
+          options[j] = this.#generateController(el);
         } else if( typeof el === 'function') {
-          options[j] = el
+          options[j] = el;
         } else {
-          options[j] = null
+          options[j] = null;
         }
       }
-      this.setBaseRouter(type, url, options)
+      this.setBaseRouter(type, url, options);
     }
-    return this.getBaseRoute()
+    return this.getBaseRoute();
   }
 }
 
-module.exports = Route
+module.exports = Route;

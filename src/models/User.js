@@ -1,6 +1,6 @@
-const sequelize = require("sequelize");
-const connection = require("../utils/databases/connection");
-const Model = require("../utils/databases/Model");
+const sequelize = require('sequelize');
+const connection = require('../utils/databases/connection');
+const Model = require('../utils/databases/Model');
 
 class User extends Model {}
 
@@ -36,6 +36,6 @@ User.init({
       attributes: {}
     }
   }
-})
+});
 
-module.exports = User
+module.exports = User;

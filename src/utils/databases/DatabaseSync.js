@@ -9,15 +9,15 @@ class DatabaseSync {
       require(file);
       connection.sync({alter:true})
         .catch(error => {
-          console.log(error)
+          console.log(error);
         }).finally(() => {
-          process.exit(0)
-        })
+          process.exit(0);
+        });
     }, function(error) {
-      console.log(error)
+      console.log(error);
     });
   }
 }
 
-module.exports = DatabaseSync
+module.exports = DatabaseSync;
 

@@ -1,5 +1,5 @@
-const {Sequelize} = require("sequelize");
-const db = require("../../configs/database");
+const {Sequelize} = require('sequelize');
+const db = require('../../configs/database');
 
 const connection = new Sequelize(
   db.name, 
@@ -9,6 +9,6 @@ const connection = new Sequelize(
     dialect: db.connection,
     host: db.host,
   }
-)
+);
 
-module.exports = connection
+module.exports = connection;

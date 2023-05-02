@@ -8,7 +8,7 @@ function getFiles(dirname, callback, onError) {
       return;
     }
     filenames.forEach(function(filename) {
-      callback(path.resolve(dirname, filename))
+      callback(path.resolve(dirname, filename));
     });
   });
 }
@@ -29,4 +29,4 @@ function readFiles(dirname, onFileContent, onError) {
 module.exports = {
   getFiles,
   readFiles
-}
+};
