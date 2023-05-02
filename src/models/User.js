@@ -12,7 +12,8 @@ User.init({
   },
   username: {
     type: sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   name: {
     type: sequelize.STRING,
@@ -24,6 +25,7 @@ User.init({
   }
 }, {
   sequelize: connection,
+  tableName: 'users',
   modelName: 'User',
   timestamps: true,
   defaultScope:{
