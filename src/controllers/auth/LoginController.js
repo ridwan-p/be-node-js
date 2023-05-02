@@ -15,7 +15,7 @@ class LoginController extends Controller {
     const payload = await this.validate(req.body);
     // find one 
     const username = payload[this.username()];
-    const user = await User.scope('withPassword').findOne({where: {username}});
+    const user = await User.findOne({where: {username}});
     // compire password 
     if(user && (await this.authenticate(payload.password, user.password))) {
       // generate token 

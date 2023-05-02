@@ -10,13 +10,10 @@ class RegisterController extends Controller {
     const {name, username, password} = await this.validate(req.body);
     const pass = await Hash.hash(password);
     const user = await User.create({username, name, password: pass});
-    // hide password 
-    const data = user.toJSON();
-    delete data.password;
 
     res.json({
       status: 'success',
-      data: data
+      data: user
     });
   }
 
