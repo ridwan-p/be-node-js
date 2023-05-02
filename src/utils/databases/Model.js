@@ -2,6 +2,12 @@ const sequelize = require('sequelize');
 const NotFoundError = require('../exceptions/NotFoundError');
 
 class Model extends sequelize.Model {
+
+  _hidden = [];
+
+  set hidden(value){ this._hidden = value; }
+  get hidden() { return this._hidden; }
+
   static async findOrFail(options){
     const data = await this.findOne(options);
     if(!data) throw new NotFoundError();
@@ -27,6 +33,15 @@ class Model extends sequelize.Model {
       lastPage: lastPage,
       data: rows
     };
+  }
+
+  toJSON () {
+    const values = Object.assign({}, this.get());
+  
+    for (const item of this.hidden) {
+      delete values[item];
+    }
+    return values;
   }
 }
 
