@@ -1,4 +1,9 @@
+const { container, inversify } = require('../di/ioc');
 const Route = require('../routes/Route');
-const FacadeHandle = require('../handles/FacadeHandle');
 
-module.exports = new Proxy(new Route, FacadeHandle);
+const name = 'Utils.Routes.Route';
+inversify.decorate(inversify.injectable(), Route);
+
+container.bind(name).to(Route);
+
+module.exports = container.get(name);

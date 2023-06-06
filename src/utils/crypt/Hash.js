@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 class Hash {
   #saltRounds = 10;
   
-  constructor(text) {
+  constructor(text = null) {
     this.setText(text);
   }
   
   setText(text) {
-    if(text) this.text = text;
+    this.text = text;
     return this;
   }
 
